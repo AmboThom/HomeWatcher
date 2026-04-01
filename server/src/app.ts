@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 import { config } from './config';
 import { errorHandler, notFound } from './middleware/errorHandler';
 import authRouter from './auth/auth.router';
+import propertiesRouter from './properties/properties.router';
+import invitesRouter from './invites/invites.router';
 
 export function createApp(): express.Application {
   const app = express();
@@ -44,6 +46,9 @@ export function createApp(): express.Application {
 
   // ── API routes ───────────────────────────────────────────
   app.use('/api/auth', authRouter);
+  app.use('/api/properties', propertiesRouter);
+  app.use('/api/properties/:id/invites', invitesRouter);
+  app.use('/api/invites', invitesRouter);
 
   // 404 + global error handler (must be last)
   app.use(notFound);
