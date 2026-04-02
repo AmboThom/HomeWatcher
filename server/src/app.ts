@@ -8,6 +8,7 @@ import { errorHandler, notFound } from './middleware/errorHandler';
 import authRouter from './auth/auth.router';
 import propertiesRouter from './properties/properties.router';
 import invitesRouter from './invites/invites.router';
+import tenantRouter from './tenant/tenant.router';
 
 export function createApp(): express.Application {
   const app = express();
@@ -49,6 +50,7 @@ export function createApp(): express.Application {
   app.use('/api/properties', propertiesRouter);
   app.use('/api/properties/:id/invites', invitesRouter);
   app.use('/api/invites', invitesRouter);
+  app.use('/api/tenant', tenantRouter);
 
   // 404 + global error handler (must be last)
   app.use(notFound);
