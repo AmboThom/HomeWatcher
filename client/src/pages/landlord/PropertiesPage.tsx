@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { MapPin, KeyRound, Pencil } from 'lucide-react';
+import { MapPin, KeyRound, Pencil, Users } from 'lucide-react';
 
 import { fetchProperties, type Property } from '@/lib/properties';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import PropertyDialog from '@/components/PropertyDialog';
 import InviteCodesDialog from '@/components/InviteCodesDialog';
+import PropertyTenantsDialog from '@/components/PropertyTenantsDialog';
 
 function PropertyCardSkeleton() {
   return (
@@ -27,6 +28,7 @@ export default function PropertiesPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingProperty, setEditingProperty] = useState<Property | undefined>();
   const [inviteProperty, setInviteProperty] = useState<Property | undefined>();
+  const [tenantsProperty, setTenantsProperty] = useState<Property | undefined>();
 
   const { data: properties, isLoading, isError } = useQuery({
     queryKey: ['properties'],
@@ -64,6 +66,14 @@ export default function PropertiesPage() {
         />
       )}
 
+      {tenantsProperty && (
+        <PropertyTenantsDialog
+          open={!!tenantsProperty}
+          onOpenChange={(open) => { if (!open) setTenantsProperty(undefined); }}
+          property={tenantsProperty}
+        />
+      )}
+
       {isLoading && (
         <div className="grid gap-4 sm:grid-cols-2">
           <PropertyCardSkeleton />
@@ -94,10 +104,14 @@ export default function PropertiesPage() {
                   <span>{property.address}</span>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                   <Button variant="outline" size="sm" className="gap-1" onClick={() => setInviteProperty(property)}>
                     <KeyRound className="h-3.5 w-3.5" />
                     Invite codes
+                  </Button>
+                  <Button variant="outline" size="sm" className="gap-1" onClick={() => setTenantsProperty(property)}>
+                    <Users className="h-3.5 w-3.5" />
+                    Tenants
                   </Button>
                   <Button variant="ghost" size="sm" className="gap-1" onClick={() => openEdit(property)}>
                     <Pencil className="h-3.5 w-3.5" />

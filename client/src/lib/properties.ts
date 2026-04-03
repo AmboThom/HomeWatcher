@@ -30,3 +30,14 @@ export async function updateProperty(
 export async function deleteProperty(id: string): Promise<void> {
   await api.delete(`/api/properties/${id}`);
 }
+
+export interface TenantSummary {
+  id: string;
+  first_name: string;
+  last_name: string;
+}
+
+export async function fetchPropertyTenants(propertyId: string): Promise<TenantSummary[]> {
+  const { data } = await api.get<TenantSummary[]>(`/api/properties/${propertyId}/tenants`);
+  return data;
+}

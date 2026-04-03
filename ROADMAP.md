@@ -41,9 +41,9 @@
 - Invite code management UI
 - Tenant dashboard (join via code, view linked properties)
 
-## Phase 5 — Tenant-Facing Features 🔲
+## Phase 5 — Tenant-Facing Features ✅
 - View all properties the tenant is linked to
-- View other tenants in a shared property (TBD)
+- Landlord can view tenants linked to a property
 
 ## Phase 6 — Maintenance Requests 🔲
 - `maintenance_requests` table

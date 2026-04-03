@@ -6,6 +6,7 @@ import {
   getPropertyById,
   updateProperty,
   deleteProperty,
+  getPropertyTenants,
 } from './properties.service';
 
 export async function create(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -49,6 +50,15 @@ export async function update(req: Request, res: Response, next: NextFunction): P
     const input = updatePropertySchema.parse(req.body);
     const property = await updateProperty(req.params.id, req.user!.id, input);
     res.json(property);
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function listTenants(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const tenants = await getPropertyTenants(req.params.id, req.user!.id);
+    res.json(tenants);
   } catch (err) {
     next(err);
   }

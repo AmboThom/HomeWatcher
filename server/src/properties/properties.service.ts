@@ -66,6 +66,31 @@ export async function updateProperty(
   return rows[0];
 }
 
+export interface TenantSummary {
+  id: string;
+  first_name: string;
+  last_name: string;
+}
+
+export async function getPropertyTenants(
+  id: string,
+  landlordId: string
+): Promise<TenantSummary[]> {
+  const property = await getPropertyById(id);
+  if (!property) throw makeError('Property not found', 404);
+  if (property.landlord_id !== landlordId) throw makeError('Forbidden', 403);
+
+  const { rows } = await pool.query<TenantSummary>(
+    `SELECT u.id, u.first_name, u.last_name
+     FROM users u
+     INNER JOIN tenant_properties tp ON tp.tenant_id = u.id
+     WHERE tp.property_id = $1
+     ORDER BY u.first_name, u.last_name`,
+    [id]
+  );
+  return rows;
+}
+
 export async function deleteProperty(id: string, landlordId: string): Promise<void> {
   const property = await getPropertyById(id);
   if (!property) throw makeError('Property not found', 404);
