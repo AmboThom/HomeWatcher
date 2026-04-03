@@ -28,3 +28,7 @@ Thumbs.db
 
 # Docker
 docker-data/
+
+# Project docs
+CLAUDE.md
+ROADMAP.md
