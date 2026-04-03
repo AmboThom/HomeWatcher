@@ -45,7 +45,7 @@
 - View all properties the tenant is linked to
 - Landlord can view tenants linked to a property
 
-## Phase 6 — Maintenance Requests 🔲
+## Phase 6 — Maintenance Requests ✅
 - `maintenance_requests` table
 - Tenant submits a request (title, description, priority)
 - Landlord views and updates request status (open → in progress → resolved)

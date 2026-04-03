@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { MapPin, KeyRound, Pencil, Users } from 'lucide-react';
+import { MapPin, KeyRound, Pencil, Users, Wrench } from 'lucide-react';
 
 import { fetchProperties, type Property } from '@/lib/properties';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import PropertyDialog from '@/components/PropertyDialog';
 import InviteCodesDialog from '@/components/InviteCodesDialog';
 import PropertyTenantsDialog from '@/components/PropertyTenantsDialog';
+import MaintenanceRequestsDialog from '@/components/MaintenanceRequestsDialog';
 
 function PropertyCardSkeleton() {
   return (
@@ -29,6 +30,7 @@ export default function PropertiesPage() {
   const [editingProperty, setEditingProperty] = useState<Property | undefined>();
   const [inviteProperty, setInviteProperty] = useState<Property | undefined>();
   const [tenantsProperty, setTenantsProperty] = useState<Property | undefined>();
+  const [requestsProperty, setRequestsProperty] = useState<Property | undefined>();
 
   const { data: properties, isLoading, isError } = useQuery({
     queryKey: ['properties'],
@@ -74,6 +76,14 @@ export default function PropertiesPage() {
         />
       )}
 
+      {requestsProperty && (
+        <MaintenanceRequestsDialog
+          open={!!requestsProperty}
+          onOpenChange={(open) => { if (!open) setRequestsProperty(undefined); }}
+          property={requestsProperty}
+        />
+      )}
+
       {isLoading && (
         <div className="grid gap-4 sm:grid-cols-2">
           <PropertyCardSkeleton />
@@ -112,6 +122,10 @@ export default function PropertiesPage() {
                   <Button variant="outline" size="sm" className="gap-1" onClick={() => setTenantsProperty(property)}>
                     <Users className="h-3.5 w-3.5" />
                     Tenants
+                  </Button>
+                  <Button variant="outline" size="sm" className="gap-1" onClick={() => setRequestsProperty(property)}>
+                    <Wrench className="h-3.5 w-3.5" />
+                    Requests
                   </Button>
                   <Button variant="ghost" size="sm" className="gap-1" onClick={() => openEdit(property)}>
                     <Pencil className="h-3.5 w-3.5" />
