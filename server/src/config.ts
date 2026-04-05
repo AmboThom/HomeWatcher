@@ -39,4 +39,9 @@ export const config = {
     secretAccessKey: optionalEnv('AWS_SECRET_ACCESS_KEY', ''),
     s3BucketName: optionalEnv('S3_BUCKET_NAME', ''),
   },
+
+  email: {
+    resendApiKey: optionalEnv('RESEND_API_KEY', ''),
+    from: optionalEnv('EMAIL_FROM', 'onboarding@resend.dev'),
+  },
 } as const;
