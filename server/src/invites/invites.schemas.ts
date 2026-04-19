@@ -8,7 +8,7 @@ export const createInviteSchema = z.object({
 export type CreateInviteInput = z.infer<typeof createInviteSchema>;
 
 export const redeemInviteSchema = z.object({
-  code: z.string().min(1, 'Code is required'),
+  code: z.string().regex(/^[A-Z0-9]{4}-[A-Z0-9]{4}$/, 'Invalid invite code format'),
 });
 
 export type RedeemInviteInput = z.infer<typeof redeemInviteSchema>;

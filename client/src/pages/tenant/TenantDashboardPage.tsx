@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import JoinPropertyDialog from '@/components/JoinPropertyDialog';
 import SubmitRequestDialog from '@/components/SubmitRequestDialog';
+import TenantRentSection from '@/components/TenantRentSection';
 
 function PropertyCardSkeleton() {
   return (
@@ -66,6 +67,8 @@ export default function TenantDashboardPage() {
           <p className="text-sm">Ask your landlord for an invite code to get started.</p>
         </div>
       )}
+
+      <TenantRentSection />
 
       {properties && properties.length > 0 && (
         <div className="grid gap-4 sm:grid-cols-2">

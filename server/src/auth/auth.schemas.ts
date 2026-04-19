@@ -4,8 +4,8 @@ export const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8, 'Password must be at least 8 characters'),
   role: z.enum(['landlord', 'tenant', 'agent']),
-  first_name: z.string().min(1, 'First name is required'),
-  last_name: z.string().min(1, 'Last name is required'),
+  first_name: z.string().min(1, 'First name is required').max(100),
+  last_name: z.string().min(1, 'Last name is required').max(100),
 });
 
 export const loginSchema = z.object({

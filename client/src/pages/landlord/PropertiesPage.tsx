@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { MapPin, KeyRound, Pencil, Users, Wrench } from 'lucide-react';
+import { MapPin, KeyRound, Pencil, Users, Wrench, DollarSign } from 'lucide-react';
 
 import { fetchProperties, type Property } from '@/lib/properties';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import PropertyDialog from '@/components/PropertyDialog';
 import InviteCodesDialog from '@/components/InviteCodesDialog';
 import PropertyTenantsDialog from '@/components/PropertyTenantsDialog';
 import MaintenanceRequestsDialog from '@/components/MaintenanceRequestsDialog';
+import RentDialog from '@/components/RentDialog';
 
 function PropertyCardSkeleton() {
   return (
@@ -31,6 +32,7 @@ export default function PropertiesPage() {
   const [inviteProperty, setInviteProperty] = useState<Property | undefined>();
   const [tenantsProperty, setTenantsProperty] = useState<Property | undefined>();
   const [requestsProperty, setRequestsProperty] = useState<Property | undefined>();
+  const [rentProperty, setRentProperty] = useState<Property | undefined>();
 
   const { data: properties, isLoading, isError } = useQuery({
     queryKey: ['properties'],
@@ -84,6 +86,14 @@ export default function PropertiesPage() {
         />
       )}
 
+      {rentProperty && (
+        <RentDialog
+          open={!!rentProperty}
+          onOpenChange={(open) => { if (!open) setRentProperty(undefined); }}
+          property={rentProperty}
+        />
+      )}
+
       {isLoading && (
         <div className="grid gap-4 sm:grid-cols-2">
           <PropertyCardSkeleton />
@@ -126,6 +136,10 @@ export default function PropertiesPage() {
                   <Button variant="outline" size="sm" className="gap-1" onClick={() => setRequestsProperty(property)}>
                     <Wrench className="h-3.5 w-3.5" />
                     Requests
+                  </Button>
+                  <Button variant="outline" size="sm" className="gap-1" onClick={() => setRentProperty(property)}>
+                    <DollarSign className="h-3.5 w-3.5" />
+                    Rent
                   </Button>
                   <Button variant="ghost" size="sm" className="gap-1" onClick={() => openEdit(property)}>
                     <Pencil className="h-3.5 w-3.5" />
