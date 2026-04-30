@@ -47,7 +47,7 @@ export default function TenantRentSection() {
   });
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as ReturnType<typeof zodResolver<FormValues>>,
     defaultValues: { amount: 0, paid_at: '', notes: '' },
   });
 
