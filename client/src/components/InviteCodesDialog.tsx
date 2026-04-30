@@ -84,7 +84,7 @@ export default function InviteCodesDialog({ open, onOpenChange, property }: Prop
   });
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as ReturnType<typeof zodResolver<FormValues>>,
     defaultValues: { expires_at: '', max_uses: 1 },
   });
 

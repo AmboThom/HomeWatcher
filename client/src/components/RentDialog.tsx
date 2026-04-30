@@ -60,7 +60,7 @@ function AssignRentForm({
   const unassigned = tenants.filter((t) => !assignedTenantIds.has(t.id));
 
   const form = useForm<AssignFormValues>({
-    resolver: zodResolver(assignSchema),
+    resolver: zodResolver(assignSchema) as ReturnType<typeof zodResolver<AssignFormValues>>,
     defaultValues: { tenant_id: '', amount: 0, due_day: 1 },
   });
 
@@ -193,7 +193,7 @@ function AssignmentRow({
   });
 
   const form = useForm<PaymentFormValues>({
-    resolver: zodResolver(paymentSchema),
+    resolver: zodResolver(paymentSchema) as ReturnType<typeof zodResolver<PaymentFormValues>>,
     defaultValues: { amount: 0, paid_at: '', notes: '' },
   });
 
