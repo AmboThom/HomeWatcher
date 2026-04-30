@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import { rateLimit } from 'express-rate-limit';
+import path from 'path';
 import { config } from './config';
 import { errorHandler, notFound } from './middleware/errorHandler';
 import authRouter from './auth/auth.router';
@@ -81,6 +82,15 @@ export function createApp(): express.Application {
   app.use('/api/tenant', tenantRouter);
   app.use('/api/maintenance', maintenanceRouter);
   app.use('/api/rent', rentRouter);
+
+  // ── Serve client in production ───────────────────────────
+  if (config.nodeEnv === 'production') {
+    const clientDist = path.join(__dirname, '../../client/dist');
+    app.use(express.static(clientDist));
+    app.get('*', (_req, res) => {
+      res.sendFile(path.join(clientDist, 'index.html'));
+    });
+  }
 
   // 404 + global error handler (must be last)
   app.use(notFound);
