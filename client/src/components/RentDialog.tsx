@@ -41,8 +41,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const assignSchema = z.object({
   tenant_id: z.string().uuid('Select a tenant'),
-  amount: z.coerce.number().min(0.01, 'Amount is required'),
-  due_day: z.coerce.number().int().min(1).max(31),
+  amount: z.number().min(0.01, 'Amount is required'),
+  due_day: z.number().int().min(1).max(31),
 });
 
 type AssignFormValues = z.infer<typeof assignSchema>;
@@ -119,7 +119,14 @@ function AssignRentForm({
               <FormItem>
                 <FormLabel>Amount ($)</FormLabel>
                 <FormControl>
-                  <Input type="number" step="0.01" min="0.01" placeholder="950.00" {...field} />
+                  <Input
+                    type="number"
+                    step="0.01"
+                    min="0.01"
+                    placeholder="950.00"
+                    value={field.value}
+                    onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -133,7 +140,14 @@ function AssignRentForm({
               <FormItem>
                 <FormLabel>Due day</FormLabel>
                 <FormControl>
-                  <Input type="number" min={1} max={31} placeholder="1" {...field} />
+                  <Input
+                    type="number"
+                    min={1}
+                    max={31}
+                    placeholder="1"
+                    value={field.value}
+                    onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 1)}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -152,7 +166,7 @@ function AssignRentForm({
 // ── Log payment form ───────────────────────────────────────────────
 
 const paymentSchema = z.object({
-  amount: z.coerce.number().min(0.01, 'Amount is required'),
+  amount: z.number().min(0.01, 'Amount is required'),
   paid_at: z.string().min(1, 'Date is required'),
   notes: z.string().optional(),
 });
@@ -226,7 +240,14 @@ function AssignmentRow({
                     <FormItem>
                       <FormLabel className="text-xs">Amount ($)</FormLabel>
                       <FormControl>
-                        <Input type="number" step="0.01" min="0.01" className="h-8 text-xs" {...field} />
+                        <Input
+                          type="number"
+                          step="0.01"
+                          min="0.01"
+                          className="h-8 text-xs"
+                          value={field.value}
+                          onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

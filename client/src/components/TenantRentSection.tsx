@@ -25,7 +25,7 @@ import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const schema = z.object({
-  amount: z.coerce.number().min(0.01, 'Amount is required'),
+  amount: z.number().min(0.01, 'Amount is required'),
   paid_at: z.string().min(1, 'Date is required'),
   notes: z.string().optional(),
 });
@@ -100,7 +100,14 @@ export default function TenantRentSection() {
                     <FormItem>
                       <FormLabel>Amount ($)</FormLabel>
                       <FormControl>
-                        <Input type="number" step="0.01" min="0.01" placeholder="950.00" {...field} />
+                        <Input
+                          type="number"
+                          step="0.01"
+                          min="0.01"
+                          placeholder="950.00"
+                          value={field.value}
+                          onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

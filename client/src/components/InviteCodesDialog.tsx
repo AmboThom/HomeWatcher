@@ -24,7 +24,7 @@ import { Badge } from '@/components/ui/badge';
 
 const schema = z.object({
   expires_at: z.string().min(1, 'Expiry date is required'),
-  max_uses: z.coerce.number().int().min(1, 'Must be at least 1'),
+  max_uses: z.number().int().min(1, 'Must be at least 1'),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -146,7 +146,12 @@ export default function InviteCodesDialog({ open, onOpenChange, property }: Prop
                   <FormItem>
                     <FormLabel>Max uses</FormLabel>
                     <FormControl>
-                      <Input type="number" min={1} {...field} />
+                      <Input
+                        type="number"
+                        min={1}
+                        value={field.value}
+                        onChange={(e) => field.onChange(parseInt(e.target.value, 10) || 1)}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
