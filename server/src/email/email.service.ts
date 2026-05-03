@@ -1,8 +1,6 @@
 import { Resend } from 'resend';
 import { config } from '../config';
 
-const resend = new Resend(config.email.resendApiKey);
-
 interface SendEmailOptions {
   to: string;
   subject: string;
@@ -15,6 +13,7 @@ async function sendEmail(options: SendEmailOptions): Promise<void> {
     return;
   }
 
+  const resend = new Resend(config.email.resendApiKey);
   const { error } = await resend.emails.send({
     from: config.email.from,
     to: options.to,
