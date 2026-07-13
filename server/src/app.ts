@@ -13,6 +13,7 @@ import invitesRouter from './invites/invites.router';
 import tenantRouter from './tenant/tenant.router';
 import maintenanceRouter from './maintenance/maintenance.router';
 import rentRouter from './rent/rent.router';
+import billsRouter from './bills/bills.router';
 
 export function createApp(): express.Application {
   const app = express();
@@ -82,6 +83,7 @@ export function createApp(): express.Application {
   app.use('/api/tenant', tenantRouter);
   app.use('/api/maintenance', maintenanceRouter);
   app.use('/api/rent', rentRouter);
+  app.use('/api/bills', billsRouter);
 
   // ── Serve client in production ───────────────────────────
   if (config.nodeEnv === 'production') {

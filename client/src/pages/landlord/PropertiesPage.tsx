@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { MapPin, KeyRound, Pencil, Users, Wrench, DollarSign } from 'lucide-react';
+import { MapPin, KeyRound, Pencil, Users, Wrench, DollarSign, ReceiptText } from 'lucide-react';
 
 import { fetchProperties, type Property } from '@/lib/properties';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import InviteCodesDialog from '@/components/InviteCodesDialog';
 import PropertyTenantsDialog from '@/components/PropertyTenantsDialog';
 import MaintenanceRequestsDialog from '@/components/MaintenanceRequestsDialog';
 import RentDialog from '@/components/RentDialog';
+import BillsDialog from '@/components/BillsDialog';
 
 function PropertyCardSkeleton() {
   return (
@@ -33,6 +34,7 @@ export default function PropertiesPage() {
   const [tenantsProperty, setTenantsProperty] = useState<Property | undefined>();
   const [requestsProperty, setRequestsProperty] = useState<Property | undefined>();
   const [rentProperty, setRentProperty] = useState<Property | undefined>();
+  const [billsProperty, setBillsProperty] = useState<Property | undefined>();
 
   const { data: properties, isLoading, isError } = useQuery({
     queryKey: ['properties'],
@@ -94,6 +96,14 @@ export default function PropertiesPage() {
         />
       )}
 
+      {billsProperty && (
+        <BillsDialog
+          open={!!billsProperty}
+          onOpenChange={(open) => { if (!open) setBillsProperty(undefined); }}
+          property={billsProperty}
+        />
+      )}
+
       {isLoading && (
         <div className="grid gap-4 sm:grid-cols-2">
           <PropertyCardSkeleton />
@@ -140,6 +150,10 @@ export default function PropertiesPage() {
                   <Button variant="outline" size="sm" className="gap-1" onClick={() => setRentProperty(property)}>
                     <DollarSign className="h-3.5 w-3.5" />
                     Rent
+                  </Button>
+                  <Button variant="outline" size="sm" className="gap-1" onClick={() => setBillsProperty(property)}>
+                    <ReceiptText className="h-3.5 w-3.5" />
+                    Bills
                   </Button>
                   <Button variant="ghost" size="sm" className="gap-1" onClick={() => openEdit(property)}>
                     <Pencil className="h-3.5 w-3.5" />

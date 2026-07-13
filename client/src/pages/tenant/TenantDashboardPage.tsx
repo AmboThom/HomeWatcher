@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { MapPin, Wrench } from 'lucide-react';
+import { MapPin, Wrench, ReceiptText } from 'lucide-react';
 
 import { fetchTenantProperties } from '@/lib/tenant';
 import { type Property } from '@/lib/properties';
@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import JoinPropertyDialog from '@/components/JoinPropertyDialog';
 import SubmitRequestDialog from '@/components/SubmitRequestDialog';
 import TenantRentSection from '@/components/TenantRentSection';
+import BillsDialog from '@/components/BillsDialog';
 
 function PropertyCardSkeleton() {
   return (
@@ -27,6 +28,7 @@ function PropertyCardSkeleton() {
 export default function TenantDashboardPage() {
   const [joinOpen, setJoinOpen] = useState(false);
   const [requestProperty, setRequestProperty] = useState<Property | undefined>();
+  const [billsProperty, setBillsProperty] = useState<Property | undefined>();
 
   const { data: properties, isLoading, isError } = useQuery({
     queryKey: ['tenant-properties'],
@@ -47,6 +49,14 @@ export default function TenantDashboardPage() {
           open={!!requestProperty}
           onOpenChange={(open) => { if (!open) setRequestProperty(undefined); }}
           property={requestProperty}
+        />
+      )}
+
+      {billsProperty && (
+        <BillsDialog
+          open={!!billsProperty}
+          onOpenChange={(open) => { if (!open) setBillsProperty(undefined); }}
+          property={billsProperty}
         />
       )}
 
@@ -82,15 +92,26 @@ export default function TenantDashboardPage() {
                   <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
                   <span>{property.address}</span>
                 </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-1"
-                  onClick={() => setRequestProperty(property)}
-                >
-                  <Wrench className="h-3.5 w-3.5" />
-                  Submit request
-                </Button>
+                <div className="flex gap-2 flex-wrap">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-1"
+                    onClick={() => setRequestProperty(property)}
+                  >
+                    <Wrench className="h-3.5 w-3.5" />
+                    Submit request
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-1"
+                    onClick={() => setBillsProperty(property)}
+                  >
+                    <ReceiptText className="h-3.5 w-3.5" />
+                    Log bill
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}
